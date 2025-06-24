@@ -18,6 +18,7 @@ import { TaskDialog } from "./task/TaskDialog.jsx";
 import { FaList } from "react-icons/fa6";
 import { UserInfo } from "./UserInfo.jsx";
 import { IoMdAdd } from "react-icons/io";
+import AddSubTask from "./AddSubTask.jsx";
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,
   medium: <MdKeyboardArrowUp />,
@@ -98,7 +99,9 @@ const [open, setOpen]=useState(false)
           </div>
           </>}
         <div className="w-full pb-2">
-          <button disabled={user.isAdmin ? false : true}
+          <button
+          onClick={()=>setOpen(true)}
+            disabled={user.isAdmin ? false : true}
           className="w-full flex gap-4 items-center text-sm text-gray-400 font-semibold disabled:cursor-not-allowed disabled"
           >
 <IoMdAdd className="text-lg"/>
@@ -107,7 +110,7 @@ const [open, setOpen]=useState(false)
         </div>
         </div>
            
-     {/* <AddSubTask open={open} setOpen={setOpen} id={task._id} /> */}
+     <AddSubTask open={open} setOpen={setOpen} id={task._id} />
           </>
           )
           }

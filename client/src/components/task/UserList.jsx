@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { summary } from "../../assets/data"
 import { Listbox, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
@@ -13,6 +13,13 @@ export const UserList = ({ setTeam, team }) => {
         setSelectedUsers(el);
         setTeam(el.map((u) => u._id));
     };
+    useEffect(() => {
+        if (team?.length < 1) {
+            data && setSelectedUsers([data[0]]);
+        } else {
+            setSelectedUsers(team);
+        }
+    },[])
     return (
       <div>
           <p className='text-gray-700'>Assign Task To: </p>
@@ -79,4 +86,3 @@ export const UserList = ({ setTeam, team }) => {
       
   )
 }
-//1.30
