@@ -72,7 +72,8 @@ const Users = () => {
     </tr>
   )
   return (
-    <div className='w-full md:px-1 px-0 mb6'>
+    <>
+       <div className='w-full md:px-1 px-0 mb6'>
       <div className='flex items-center justify-between mb-8'></div>
       <Title title='Team Members' />
          <Button
@@ -96,6 +97,8 @@ const Users = () => {
         </div>
       
     </div>
+    </>
+   
 
   )
 }

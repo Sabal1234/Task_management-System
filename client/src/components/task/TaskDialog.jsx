@@ -9,14 +9,17 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { Menu, Transition } from "@headlessui/react";
 import AddTask from './AddTask';
 import AddSubTask from '../AddSubTask';
+import ConfirmationDialog from '../Dialogs';
 
 export const TaskDialog = ({task}) => {
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const navigate = useNavigate();
+
   const duplicateHandler = () => { };
   const deleteClicks = () => { };
+  const deleteHandler = () => { };
   const items = [
     {
       label: "Open Task",
@@ -111,7 +114,11 @@ export const TaskDialog = ({task}) => {
       <AddSubTask
         open={open}
         setOpen={setOpen}
-      
+      />
+      <ConfirmationDialog
+        open={openDialog}
+        setOpen={setOpen}
+        onClick={deleteHandler}
       />
     </>
     
