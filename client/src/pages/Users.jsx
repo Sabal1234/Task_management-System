@@ -5,6 +5,8 @@ import Button from '../components/Button.jsx';
 import { Title } from '../components/Title.jsx';
 import { getInitials } from '../utils';
 import clsx from 'clsx';
+import ConfirmationDialog, { UserAction } from '../components/Dialogs.jsx';
+import AddUser from '../components/AddUser.jsx';
 
 const Users = () => {
   
@@ -12,6 +14,20 @@ const Users = () => {
   const [open, setOpen] = useState(false);
   const [openAction, setOpenAction] = useState(false);
   const [selected, setSelected] = useState(null);
+
+  const userActionHandler = () => { }
+  const deleteHandler = () => { }
+  
+  const deleteClick = (id) => {
+    setSelected(id);
+    setOpenDialog(true);
+  }
+  
+    const editClick = (el) => {
+    setSelected(el);
+    setOpenDialog(true);
+}
+
   const TableHeader = () => (
     <thead className='border-b border-gray-300'>
       <tr className='text-black text-left'>
@@ -58,14 +74,14 @@ const Users = () => {
           className='text-blue-600 hover:text-blue-500 font-semibold sm:px-0'
           label='Edit'
           type='button'
-          // onClick={() => editClick(user)}
+          onClick={() => editClick(user)}
         />
 
         <Button
           className='text-red-700 hover:text-red-500 font-semibold sm:px-0'
           label='Delete'
           type='button'
-          // onClick={() => deleteClick(user?._id)}
+          onClick={() => deleteClick(user?._id)}
         />
 
       </td>
@@ -96,7 +112,26 @@ const Users = () => {
           </div>
         </div>
       
-    </div>
+      </div>
+      
+      <AddUser
+open={open}
+setOpen={setOpen}
+userData={selected}
+key={new Date().getTime().toString()}
+      />
+      
+      <ConfirmationDialog
+        open={openDialog}
+        setOpen={setOpenDialog}
+        onClick={deleteHandler}
+      />
+      
+      <UserAction
+        open={openAction}
+        setOpen={setOpenAction}
+        onClick={userActionHandler}
+      />
     </>
    
 
