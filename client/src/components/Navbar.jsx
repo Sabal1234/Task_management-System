@@ -11,8 +11,7 @@ export const Navbar = () => {
 
   return (
     <div className='flex justify-between items-center bg-white dark:bg-[#1f1f1f] px-4 py-3 2xl:py-4 sticky z-10 top-0 shadow-sm border-b border-gray-200 dark:border-gray-800'>
-      {/* Left Section: Sidebar toggle & Search bar */}
-      <div className='flex items-center gap-4 w-full max-w-lg'>
+      <div className='flex items-center gap-4'>
         <button
           onClick={() => dispatch(setOpenSidebar(true))}
           className='text-2xl text-gray-500 block md:hidden'
@@ -30,8 +29,7 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* Right Section: Notifications & Avatar */}
-      <div className='flex items-center gap-3'>
+      <div className='flex gap-2 items-center'>
         <NotificationPanel />
         <UserAvatar />
       </div>

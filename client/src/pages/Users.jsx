@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { IoMdAdd } from 'react-icons/io';
-import { summary } from '../assets/data.js';
 import Button from '../components/Button.jsx';
 import { Title } from '../components/Title.jsx';
 import { getInitials } from '../utils';
 import clsx from 'clsx';
 import ConfirmationDialog, { UserAction } from '../components/Dialogs.jsx';
 import AddUser from '../components/AddUser.jsx';
+import { useDeleteUserMutation, useGetTeamListQuery, useUserActionMutation } from '../redux/slices/api/userApiSlice.js';
+import { isAction } from '@reduxjs/toolkit';
+import { toast } from 'sonner';
 
 const Users = () => {
   
@@ -15,8 +17,42 @@ const Users = () => {
   const [openAction, setOpenAction] = useState(false);
   const [selected, setSelected] = useState(null);
 
-  const userActionHandler = () => { }
-  const deleteHandler = () => { }
+  const { data, refetch } = useGetTeamListQuery();
+  const [deleteUser] = useDeleteUserMutation();
+  const [userAction] = useUserActionMutation();
+  const userActionHandler = async () => {
+    try {
+      const result = await userAction({
+        isAction: !selected?.isAction,
+        id: selected?._id,
+
+      });
+      refetch();
+      toast.success(result.data.message);
+      setSelected(null);
+      setTimeout(() => {
+        setOpenAction(false);
+      }, 500);
+    } catch (error) {
+      console.log(err);
+      toast.error(err?.data?.message || err.error);
+    }
+   };
+  const deleteHandler = async () => { 
+    try {
+      const result = await deleteUser(selected)
+      
+      refetch();
+toast.success(res?.data?.message);
+setSelected(null);
+setTimeout(() => {
+setOpenDialog(false);
+}, 500); 
+    } catch (error) {
+      console.log(err);
+      toast.error(err?.data?.message || err.error);
+    }
+  };
   
   const deleteClick = (id) => {
     setSelected(id);
@@ -104,7 +140,7 @@ const Users = () => {
             <table className='w-full mb-5'>
               <TableHeader />
               <tbody>
-                {summary.users?.map((user, index) => (
+                {data?.map((user, index) => (
                   <TableRow key={index} user={user} />
                 ))}
               </tbody>

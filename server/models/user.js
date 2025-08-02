@@ -2,14 +2,14 @@ import bcrypt from 'bcryptjs';
 import mongoose, { Schema } from 'mongoose';
 
 const userSchema = new Schema({
-    name: { type: String, require: true },
-    title: { type: String, require: true },
-    role: { type: String, require: true },
-    email: { type: String, require: true, unique: true },
-    password: { type: String, require: true },
-    isAdmin: { type: Boolean, require: true, default:false },
+    name: { type: String, required: true },
+    title: { type: String, required: true },
+    role: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    isAdmin: { type: Boolean, required: true, default:false },
     tasks: [{ type: Schema.Types.ObjectId, ref: "Task" }],
-    isActive: { type: Boolean, require: true, default: false },
+    isActive: { type: Boolean, required: true, default: true },
 }, { timestamps: true }
 );
 userSchema.pre("save", async function (next) {
@@ -21,7 +21,7 @@ userSchema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
 });
 
-userSchema.method.matchPassword = async function (enteredPassword) {
+userSchema.methods.matchPassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 const User = mongoose.model("User", userSchema);

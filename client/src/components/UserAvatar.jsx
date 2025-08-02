@@ -5,6 +5,9 @@ import { IoLogOutOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getInitials } from "../utils";
+import { toast } from "sonner";
+import { useLogoutMutation } from "../redux/slices/api/authApiSclice";
+import { logout } from "../redux/slices/authSlice";
 
 export const UserAvatar = () => {
   const [open, setOpen] = useState(false);
@@ -13,8 +16,15 @@ export const UserAvatar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [logoutUser]=useLogoutMutation()
   const logoutHandler = async () => {
-    console.log("logout");
+    try {
+      await logoutUser().unwrap();
+      dispatch(logout());
+      navigate("/log-in");
+    } catch (error) {
+      toast.error("Something went worng");
+}
   };
 
   return (
