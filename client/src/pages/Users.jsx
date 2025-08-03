@@ -43,7 +43,7 @@ const Users = () => {
       const result = await deleteUser(selected)
       
       refetch();
-toast.success(res?.data?.message);
+toast.success("Deleted successfully");
 setSelected(null);
 setTimeout(() => {
 setOpenDialog(false);
@@ -60,10 +60,13 @@ setOpenDialog(false);
   }
   
     const editClick = (el) => {
-    setSelected(el);
-    setOpenDialog(true);
+      setSelected(el);
+        setOpen(true);
 }
-
+  const userStatusClick = (el) => {
+    setSelected(el);
+    setOpenAction(true);
+}
   const TableHeader = () => (
     <thead className='border-b border-gray-300'>
       <tr className='text-black text-left'>
@@ -96,7 +99,7 @@ setOpenDialog(false);
       
       <td>
          <button
-          // onClick={() => userStatusClick(user)}
+          onClick={() => userStatusClick(user)}
           className={clsx(
             "w-fit px-4 py-1 rounded-full",
             user?.isActive ? "Active" : "Disabled"

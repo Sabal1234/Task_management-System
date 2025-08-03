@@ -162,7 +162,7 @@ export const dashboardStatistics = async (req, res) => {
             last10Task,
             users: isAdmin ? users : [],
             task: groupedTasks,
-            graphData:groupData,
+graphData,
         };
         res.status(200).json({
             status: true,
