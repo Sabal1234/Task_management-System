@@ -7,9 +7,7 @@ import { Navbar } from "./components/Navbar";
 import { Sidebar } from "./components/Sidebar";
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
-import TaskDetails from './pages/TaskDetails';
 import Tasks from './pages/Tasks';
-import Trash from './pages/Trash';
 import Users from './pages/Users';
 
 import { IoClose } from "react-icons/io5";
@@ -98,8 +96,6 @@ function App() {
           <Route path='/in-progress/:status' element={<Tasks />} />
           <Route path='/todo/:status' element={<Tasks />} />
           <Route path='/team' element={<Users />} />
-          <Route path='/trashed' element={<Trash />} />
-          <Route path='/task/:id' element={<TaskDetails />} />
         </Route>
         <Route path='/log-in' element={<Login />} />
       </Routes>

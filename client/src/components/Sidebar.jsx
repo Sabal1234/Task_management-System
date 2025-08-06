@@ -1,17 +1,14 @@
 import clsx from "clsx";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-import React from 'react'
 
+import { FaTasks, FaUsers } from "react-icons/fa";
 import {
   MdDashboard,
   MdOutlinePendingActions,
-  MdSettings,
-  MdTaskAlt,
+  MdTaskAlt
 } from "react-icons/md";
-import { FaTasks, FaTrashAlt, FaUsers } from "react-icons/fa";
 import { setOpenSidebar } from '../redux/slices/authSlice';
-import { IoCheckmarkDoneOutline } from "react-icons/io5";
 const linkData = [
   {
     label: "Dashboard",
@@ -42,16 +39,6 @@ const linkData = [
     label: "Team",
     link: "team",
     icon: <FaUsers />,
-  },
-  // {
-  //   label: "Status",
-  //   link: "status",
-  //   icon: <IoCheckmarkDoneOutline />,
-  // },
-  {
-    label: "Trash",
-    link: "trashed",
-    icon: <FaTrashAlt />,
   },
 ];
 
@@ -96,12 +83,7 @@ export const Sidebar = () => {
           <NavLink el={link} key={link.label} />
         ))}
       </div>
-         <div className=''>
-        <button className='w-full flex gap-2 p-2 items-center text-lg text-gray-800 dark:text-white'>
-          <MdSettings />
-          <span>Settings</span>
-        </button>
-      </div>
+        
     </div>
   )
 }

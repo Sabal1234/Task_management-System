@@ -160,7 +160,7 @@ const totals = data?.task || {};
     },
     {
       _id: "2",
-      label: "COMPLTED TASK",
+      label: "COMPLETED TASK",
       total: totals["completed"] || 0,
       icon: <MdAdminPanelSettings />,
       bg: "bg-[#0f766e]",
@@ -175,9 +175,9 @@ const totals = data?.task || {};
     {
       _id: "4",
       label: "TODOS",
-      total: totals["todo"],
+      total: totals["todo"] || 0,
       icon: <FaArrowsToDot />,
-      bg: "bg-[#be185d]" || 0,
+      bg: "bg-[#be185d]",
     },
   ];
 
@@ -186,8 +186,7 @@ const totals = data?.task || {};
       <div className='w-full h-32 bg-white p-5 shadow-md rounded-md flex items-center justify-between'>
         <div className='h-full flex flex-1 flex-col justify-between'>
           <p className='text-base text-gray-600'>{label}</p>
-          <span className='text-2xl font-semibold'>{count}</span>
-          <span className='text-sm text-gray-400'>{"111 last month"}</span>
+          <span className='text-2xl font-semibold mb-1.5'>{count}</span>
         </div>
         <div
           className={clsx(
@@ -210,14 +209,12 @@ const totals = data?.task || {};
       </div>
       <div className='w-full bg-white my-16 p-4 rounded shadow-sm'>
         <h4 className='text-xl text-gray-500 font-bold mb-2'>Chart by Priority</h4>
-        <Chart data={data?.graphData} />
+        <Chart data={data?.graphData || []}/>
       </div>
       <div className='w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8'>
-        {/* /left */}
      
           <TaskTable tasks={data?.last10Task} />
       
-        {/* /right */}
         <UserTable users={data?.users}/>
       </div>
     </div>

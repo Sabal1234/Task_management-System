@@ -1,6 +1,7 @@
 import Notice from "../models/notification.js";
 import Task from "../models/task.js";
 import User from "../models/user.js";
+import asyncHandler from "express-async-handler";
 
 export const createTask = async (req, res) => {
   try {
@@ -60,7 +61,6 @@ export const duplicateTask = async (req, res) => {
     newTask.stage = task.stage;
 
     await newTask.save();
-//alert users of the task
     let text = "New task has been assigned to you";
     if (team.team?.length > 1) {
       text = text + ` and ${task.team?.length - 1} others.`;
@@ -112,7 +112,8 @@ export const postTaskActivity = async (req, res) => {
 
 export const dashboardStatistics = async (req, res) => {
     try {
-        const { userId, isAdmin } = req.user;
+      const { userId, isAdmin } = req.user;
+      console.log(isAdmin)
         const allTasks = isAdmin ? await Task.find({
             isTrashed: false,
         }).populate({
@@ -145,7 +146,6 @@ export const dashboardStatistics = async (req, res) => {
             }
             return result;
         }, {});
-//Group tasks by priority
         const graphData = Object.entries(
             allTasks?.reduce((result, task) => {
                 const { priority } = task;
@@ -153,7 +153,6 @@ export const dashboardStatistics = async (req, res) => {
                 return result;
             }, {}))
             .map(([name, total]) => ({ name, total }));
-            //calculate total task
              const totalTasks = allTasks.length;
         const last10Task = allTasks?.slice(0, 10);
 
@@ -176,28 +175,31 @@ graphData,
 };
 
 export const getTasks = async (req, res) => {
-    try {
-  const { stage, isTrashed } = req.query;
+  try {
+    const { userId, isAdmin } = req.user;
+    const { stage, isTrashed } = req.query;
 
-      let query = { isTrashed: isTrashed ? true : false };
-        if (stage) {
-    query.stage = stage;
-      }
-      let queryResult = Task.find(query).populate({
-      path: "team",
-      select: "name title email",
-      }).sort({ _id: -1 });
-      
-      const tasks = await queryResult;
-      
-  res.status(200).json({
-    status: true,
-    tasks,
-  });
-    } catch (error) {
-        console.log(error);
-        return res.status(400).json({ status: false, message: error.message });
+    const query = {
+      isTrashed: isTrashed === "true",
+    };
+
+    if (stage) {
+      query.stage = stage;
     }
+
+    if (!isAdmin) {
+      query.team = { $all: [userId] };
+    }
+
+    const tasks = await Task.find(query)
+      .populate({ path: "team", select: "name title email" })
+      .sort({ _id: -1 });
+
+    res.status(200).json({ status: true, tasks });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ status: false, message: error.message });
+  }
 };
 
 
@@ -248,12 +250,19 @@ export const createSubTask = async (req, res) => {
   }
 };
 
-export const updateTask = async (req, res) => {
+export const updateTask = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { title, date, team, stage, priority, assets, links, description } =
+    req.body;
+
   try {
-    const { id } = req.params;
-    const { title, date, team, stage, priority } = req.body;
-    
     const task = await Task.findById(id);
+
+    let newLinks = [];
+
+    if (links) {
+      newLinks = links.split(",");
+    }
 
     task.title = title;
     task.date = date;
@@ -261,17 +270,19 @@ export const updateTask = async (req, res) => {
     task.assets = assets;
     task.stage = stage.toLowerCase();
     task.team = team;
-    
+    task.links = newLinks;
+    task.description = description;
+
     await task.save();
 
     res
       .status(200)
-      .json({ status: true, message: "Task duplicated successfully." });
+      .json({ status: true, message: "Task updated successfully." });
   } catch (error) {
-    console.log(error)
     return res.status(400).json({ status: false, message: error.message });
   }
-};
+});
+
 
 export const trashTask = async (req, res) => {
 

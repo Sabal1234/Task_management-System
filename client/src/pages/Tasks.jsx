@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaList } from 'react-icons/fa6';
 import { IoMdAdd } from 'react-icons/io';
 import { MdGridView } from "react-icons/md";
 import { useParams } from 'react-router-dom';
-import { tasks } from "../assets/data.js";
 import { BoardView } from '../components/BoardView.jsx';
 import Button from '../components/Button.jsx';
 import { Tabs } from '../components/Tabs.jsx';
+import AddTask from '../components/task/AddTask.jsx';
 import Table from '../components/task/Table.jsx';
 import TaskTitle from '../components/TaskTitle.jsx';
 import { Title } from '../components/Title.jsx';
-import AddTask from '../components/task/AddTask.jsx';
+import { useGetAllTaskQuery } from '../redux/slices/api/taskApiSilice.js';
 const TABS = [
   { title: "Board View", icon: <MdGridView /> },
   {title:"List View",icon:<FaList />}
@@ -27,11 +27,20 @@ const Tasks = () => {
   const [selected, setSelected] = useState(0);
   const [open, setOpen] = useState(false);
 
-  const status=params?.status || ""
+  const status = params?.status || "";
+  const { data, isLoading } = useGetAllTaskQuery({
+    strQuery: status,
+    isTrashed: "",
+    search: ""
+  });
+  if (isLoading) {
+    return <h1>Loading...</h1>
+  }
   return (
       <div className='w-full'>
         <div className='flex items-center justify-between mb-4'>
-          <Title title={status ? `${status} Tasks` : "Tasks"} />       
+        <Title title={status ? `${status} Tasks` : "Tasks"} />      
+
         {
           !status && (
           <Button onClick={()=>setOpen(true)}
@@ -53,9 +62,9 @@ const Tasks = () => {
           <TaskTitle label="completed" className={TASK_TYPE.completed} />
         </div>
       )}
-      <BoardView tasks={tasks} />
+      <BoardView tasks={data?.tasks} />
     </>,
-    <Table tasks={tasks} />
+    <Table tasks={data?.tasks} />
   ]}
 ></Tabs>
       <AddTask open={open} setOpen={setOpen} />

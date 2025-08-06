@@ -18,18 +18,11 @@ router.put("/update/:id", protectRoute, isAdminRoute, updateTask);
 router.put("/:id", protectRoute, isAdminRoute, trashTask);
 
 router.delete(
-  "/delete-restore/:id",
-  protectRoute,
-  isAdminRoute,
+  "/delete/:id",
   deleteRestoreTask
 );
 
-router.delete(
-  "/delete-restore",
-  protectRoute,
-  isAdminRoute,
-  deleteRestoreTask
-);
+
 
 
 export default router;
