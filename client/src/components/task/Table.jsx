@@ -7,7 +7,7 @@ import { FaList } from 'react-icons/fa';
 import { UserInfo } from '../UserInfo.jsx';
 import Button from '../Button.jsx';
 import ConfirmationDialog from '../Dialogs.jsx';
-import { useDeleteTaskMutation } from '../../redux/slices/api/taskApiSilice.js';
+import { useSoftDeleteTaskMutation } from '../../redux/slices/api/taskApiSilice.js';
 import { toast } from 'sonner';
 import AddTask from './AddTask.jsx';
 
@@ -21,8 +21,7 @@ const Table = ({tasks}) => {
    const [openDialog, setOpenDialog] = useState(false);
   const [selected, setSelected] = useState(null);
     const [openEdit, setOpenEdit] = useState(false);
-  const [deleteTask] = useDeleteTaskMutation();
-  const deleteClicks = (id) => {
+const [softDeleteTask] = useSoftDeleteTaskMutation();  const deleteClicks = (id) => {
     setSelected(id)
     setOpenDialog(true)
   };
@@ -31,21 +30,16 @@ const Table = ({tasks}) => {
     setOpenEdit(true);
 
 }
-  const deleteHandler = async() => {
-    try {
-      const result = await deleteTask({
-        id:selected
-      }).unwrap()
-      toast.success(result?.message);
-      setTimeout(() => {
-        setOpenDialog(false);
-        window.location.reload();
-      }, 500);
-    } catch (error) {
-      console.log(err);
-      toast.error(err?.data?.message || err.error);
-    }
-  };
+  
+const deleteHandler = async () => {
+  try {
+    const result = await softDeleteTask(selected).unwrap();
+    toast.success(result.message || "Task moved to trash successfully.");
+    setOpenDialog(false);
+  } catch (err) {
+    toast.error(err?.data?.message || err.message || "Failed to soft delete task");
+  }
+};
 
   const TableHeader = () => (
     <thead className='w-full border-b border-gray-300'>

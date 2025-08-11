@@ -100,21 +100,6 @@ export const getTeamList = async (req, res) => {
     }
 };
 
-export const getNotificationsList = async (req, res) => {
-    try {
-        const { userId } = req.user;
-
-        const notice = await Notice.find({
-            team: userId,
-            isRead: { $nim: [userId] },
-        }).populate("task", "title");
-
-        res.status(201).json(notice);
-    } catch (error) {
-        console.log(error);
-        return res.status(400).json({ status: false, message: error.message });
-    }
-};
 export const updateUserProfile = async (req, res) => {
     const { userId, isAdmin } = req.user;
     const { _id } = req.body;
@@ -132,7 +117,7 @@ export const updateUserProfile = async (req, res) => {
             user.name = req.body.name || user.name;
             user.title = req.body.title || user.title;
             user.role = req.body.role || user.role;
-
+user.email = req.body.email || user.email;
             const updatedUser = await user.save();
 
             user.password = undefined;
@@ -147,33 +132,20 @@ export const updateUserProfile = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ status: false, message: error.message });
-    }
-};
 
-export const markNotificationRead = async (req, res) => {
-  try {
-    const { userId } = req.user;
-    const { isReadType, id } = req.query;
+       
+        if (error.code === 11000 && error.keyPattern?.email) {
+            return res.status(400).json({
+                status: false,
+                message: "Email already in use.",
+            });
+        }
 
-    if (isReadType === "all") {
-      await Notice.updateMany(
-        { team: userId, isRead: { $nin: [userId] } },
-        { $push: { isRead: userId } },
-        { new: true }
-      );
-    } else {
-      await Notice.findOneAndUpdate(
-        { _id: id, isRead: { $nin: [userId] } },
-        { $push: { isRead: userId } },
-        { new: true }
-      );
+        return res.status(500).json({
+            status: false,
+            message: "Server Error: " + error.message,
+        });
     }
-    res.status(201).json({ status: true, message: "Done" });
-  } catch (error) {
-      console.log(error);
-     return res.status(400).json({ status: false, message: error.message });
-  }
 };
 
 
@@ -242,4 +214,45 @@ export const deleteUserProfile = async (req, res) => {
         return res.status(400).json({ status: false, message: error.message });
     }
   
+};
+
+export const getNotificationsList = async (req, res) => {
+    try {
+        const { userId } = req.user;
+
+        const notice = await Notice.find({
+            team: userId,
+            isRead: { $nim: [userId] },
+        }).populate("task", "title");
+
+        res.status(201).json(notice);
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ status: false, message: error.message });
+    }
+};
+
+export const markNotificationRead = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const { isReadType, id } = req.query;
+
+    if (isReadType === "all") {
+      await Notice.updateMany(
+        { team: userId, isRead: { $nin: [userId] } },
+        { $push: { isRead: userId } },
+        { new: true }
+      );
+    } else {
+      await Notice.findOneAndUpdate(
+        { _id: id, isRead: { $nin: [userId] } },
+        { $push: { isRead: userId } },
+        { new: true }
+      );
+    }
+    res.status(201).json({ status: true, message: "Done" });
+  } catch (error) {
+      console.log(error);
+     return res.status(400).json({ status: false, message: error.message });
+  }
 };

@@ -10,8 +10,10 @@ import Login from './pages/Login';
 import Tasks from './pages/Tasks';
 import Users from './pages/Users';
 
+ 
 import { IoClose } from "react-icons/io5";
 import { setOpenSidebar } from "./redux/slices/authSlice";
+import Trash from "./pages/Trash";
 
 
 function Layout() {
@@ -34,7 +36,7 @@ function Layout() {
         </div>
       </div>
     </div>
-  ): (
+  ):(
       <Navigate to = "/log-in" state = {{from:location}} replace/>
   )
 }
@@ -96,6 +98,8 @@ function App() {
           <Route path='/in-progress/:status' element={<Tasks />} />
           <Route path='/todo/:status' element={<Tasks />} />
           <Route path='/team' element={<Users />} />
+          <Route path='/trashed' element={<Trash />} /> 
+
         </Route>
         <Route path='/log-in' element={<Login />} />
       </Routes>

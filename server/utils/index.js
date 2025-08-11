@@ -20,6 +20,6 @@ export const createJWT = (res,userId) => {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development",
         sameSite: "Strict",
-    maxAge:1*24*60*60*1000,//1day
+    maxAge:1*24*60*60*1000,
     });
 };

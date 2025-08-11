@@ -9,6 +9,7 @@ import {
   MdTaskAlt
 } from "react-icons/md";
 import { setOpenSidebar } from '../redux/slices/authSlice';
+import { FaTrash } from "react-icons/fa6";
 const linkData = [
   {
     label: "Dashboard",
@@ -40,6 +41,11 @@ const linkData = [
     link: "team",
     icon: <FaUsers />,
   },
+  {
+    label: "Trash",
+    link: "trashed",
+    icon:<FaTrash />
+  }
 ];
 
 

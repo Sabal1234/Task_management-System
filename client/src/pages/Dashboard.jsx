@@ -11,7 +11,7 @@ import {
 } from "react-icons/md";
 import { Chart } from '../components/Chart';
 import { UserInfo } from '../components/UserInfo';
-import { useGetDashboardStatsQuery } from '../redux/slices/api/taskApiSilice';
+import { useGetDashboardStatsQuery,useGetLast10TasksQuery } from '../redux/slices/api/taskApiSilice';
 import { BGS, getInitials, PRIOTITYSTYELS, TASK_TYPE } from '../utils';
 
 const TaskTable = ({ tasks }) => {
@@ -144,17 +144,18 @@ const UserTable = ({ users }) => {
 }
 
 const Dashboard = () => {
-  const { data, isLoading } = useGetDashboardStatsQuery()
-  if (isLoading) {
+const { data: dashboardData, isLoading: loadingDashboard } = useGetDashboardStatsQuery();
+const { data: last10TaskData, isLoading: loadingTasks } = useGetLast10TasksQuery();
+ if (loadingDashboard || loadingTasks) {
     return <h1>Loading...</h1>
   }
-const totals = data?.task || {};
+const totals = dashboardData?.task || {};
   
   const stats = [
     {
       _id: "1",
       label: "TOTAL TASK",
-      total: data?.totalTasks || 0,
+      total: dashboardData ?.totalTasks || 0,
       icon: <FaNewspaper />,
       bg: "bg-[#1d4ed8]",
     },
@@ -209,13 +210,13 @@ const totals = data?.task || {};
       </div>
       <div className='w-full bg-white my-16 p-4 rounded shadow-sm'>
         <h4 className='text-xl text-gray-500 font-bold mb-2'>Chart by Priority</h4>
-        <Chart data={data?.graphData || []}/>
+        <Chart data={dashboardData?.graphData || []} />
       </div>
       <div className='w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8'>
      
-          <TaskTable tasks={data?.last10Task} />
+<TaskTable tasks={last10TaskData?.last10Task} />
       
-        <UserTable users={data?.users}/>
+<UserTable users={dashboardData?.users}/>
       </div>
     </div>
   );

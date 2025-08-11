@@ -43,4 +43,3 @@ export const UserInfo = ({ user }) => {
         </div>
     )
 };
-//42.43

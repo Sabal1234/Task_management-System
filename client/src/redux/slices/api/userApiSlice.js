@@ -1,8 +1,15 @@
-import { UserAction } from "../../../components/Dialogs";
-import {apiSlice} from "../apiSlice"
-const USER_URL = "/user"
+import { apiSlice } from "../apiSlice";
+const USER_URL = "/user";
+
 export const userApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
+        //     getNotifications: builder.query({
+        //       query: () => ({
+        //         url: `${USER_URL}/notifications`,
+        //         method: "GET",
+        //         credentials: "include",
+        //       }),
+        //     }),
         updateUser: builder.mutation({
             query: (data) => ({
                 url: `${USER_URL}/profile`,
@@ -25,7 +32,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 credentials: "include",
             }),
         }),
-        UserAction: builder.mutation({
+        userAction: builder.mutation({
             query: (data) => ({
                 url: `${USER_URL}/${data.id}`,
                 method: "PUT",
@@ -35,19 +42,19 @@ export const userApiSlice = apiSlice.injectEndpoints({
         }),
         changePassword: builder.mutation({
             query: (data) => ({
-             url: `${USER_URL}/change-password`,
-            method: "PUT",
-            body: data,
-            credentials:"include",
+                url: `${USER_URL}/change-password`,
+                method: "PUT",
+                body: data,
+                credentials: "include",
+            }),
         }),
-     }),
-    }),
-});
-
+    })
+})
 export const {
     useUpdateUserMutation,
     useGetTeamListQuery,
     useDeleteUserMutation,
     useUserActionMutation,
     useChangePasswordMutation,
+    // useGetNotificationsQuery,
 } = userApiSlice;
