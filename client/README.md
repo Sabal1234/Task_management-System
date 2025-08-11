@@ -1,24 +1,17 @@
-![Output1](src/assets/Dashboard.png)
-![Output2](src/assets/TaskListView.png)
-![Output3](src/assets/TaskView.png)
-![Output4](src/assets/AddTask.png)
-![Output5](src/assets/AddTask2.png)
-![Output6](src/assets/AddTask3.png)
-![Output7](src/assets/AdminTaskBoard.png)
-![Output8](src/assets/ChangeUserPassword.png)
-![Output9](src/assets/CompleteTaskView.png)
-![Output10](src/assets/DeletePopUp.png)
-![Output11](src/assets/EditTask.png)
-![Output12](src/assets/in-Progress%20View.png)
-![Output13](src/assets/To-do%20View.png)
-![Output14](src/assets/ProfileChangePasswordLogout.png)
-![Output15](src/assets/UpdateProfile.png)
-![Output16](src/assets/GetTeamByAdmin.png)
+# TaskTitle Component
 
+The **TaskTitle** component is a small, reusable React UI element for displaying a task section title with a colored status indicator and an optional "add" button.
 
+It’s perfect for use in task boards, kanban views, or anywhere you want to label a group of tasks with a color-coded tag.
 
+---
 
+## ✨ Features
 
+- **Custom Color Indicator** — The small circle’s color is fully customizable using Tailwind background color classes.
+- **Label Text** — Displays a task title or status (e.g., "In Progress", "Completed").
+- **Add Button** — Includes an `IoMdAdd` icon button (visible on medium+ screens) for adding new tasks.
+- **Responsive Layout** — Looks clean on both mobile and desktop.
 
 
 
