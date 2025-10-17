@@ -3,13 +3,7 @@ const USER_URL = "/user";
 
 export const userApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        //     getNotifications: builder.query({
-        //       query: () => ({
-        //         url: `${USER_URL}/notifications`,
-        //         method: "GET",
-        //         credentials: "include",
-        //       }),
-        //     }),
+        
         updateUser: builder.mutation({
             query: (data) => ({
                 url: `${USER_URL}/profile`,
@@ -56,5 +50,4 @@ export const {
     useDeleteUserMutation,
     useUserActionMutation,
     useChangePasswordMutation,
-    // useGetNotificationsQuery,
 } = userApiSlice;

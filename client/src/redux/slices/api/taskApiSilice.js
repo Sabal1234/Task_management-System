@@ -19,7 +19,6 @@ export const taskApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    // NEW: Dedicated query to fetch all trashed tasks
     getTrashedTasks: builder.query({
       query: () => ({
         url: `${TASKS_URL}?isTrashed=true`,

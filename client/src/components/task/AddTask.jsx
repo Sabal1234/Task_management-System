@@ -1,5 +1,5 @@
 import { Dialog } from '@headlessui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useCreateTaskMutation, useUpdateTaskMutation } from '../../redux/slices/api/taskApiSilice';
 import Button from '../Button';
@@ -13,11 +13,27 @@ const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORITY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
 
 const AddTask = ({ open, setOpen, task }) => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+    defaultValues: {
+    title: "",
+    date: "",
+  },
+
+  });
   const [team, setTeam] = useState(task?.team || []);
   const [stage, setStage] = useState(task?.stage?.toUpperCase() || LISTS[0]);
   const [priority, setPriority] = useState(task?.priority?.toUpperCase() || PRIORITY[2]);
-
+useEffect(() => {
+  if (task) {
+    reset({
+      title: task.title || "",
+      date: task.date || "",
+    });
+    setStage(task.stage?.toUpperCase() || LISTS[0]);
+    setPriority(task.priority?.toUpperCase() || PRIORITY[2]);
+    setTeam(task.team || []);
+  }
+}, [task, reset]);
   const [createTask] = useCreateTaskMutation();
   const [updateTask] = useUpdateTaskMutation();
 

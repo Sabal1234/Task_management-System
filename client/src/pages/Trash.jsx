@@ -24,12 +24,10 @@ const TaskColor = ({ className }) => (
 );
 
 const Trash = () => {
-  // Removed dialog and message state
   const { data, isLoading, isError, refetch } = useGetTrashedTasksQuery();
   const tasks = data?.tasks || [];
   const [deleteTask, { isLoading: isDeleting }] = useDeleteTaskMutation();
 
-  // Direct action handlers without confirmation dialogs
   const deleteAllHandler = async () => {
     try {
       await deleteTask({ id: "all", actionType: "deleteAll" }).unwrap();
