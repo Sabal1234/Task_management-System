@@ -9,7 +9,7 @@ import { errorHandler, routeNotFound } from "./middlewares/errorMiddleWare.js";
 import routes from './routes/index.js';
 dotenv.config();
 dbConnection();
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 const app = express();
 
 app.use(cors({
