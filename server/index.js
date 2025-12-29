@@ -9,11 +9,11 @@ import { errorHandler, routeNotFound } from "./middlewares/errorMiddleWare.js";
 import routes from './routes/index.js';
 dotenv.config();
 dbConnection();
-const PORT = 5000;
+const PORT = process.env.PORT;
 const app = express();
 
 app.use(cors({
-    origin: ['http://localhost:3000', "http://localhost:3000"],
+    origin: ['http://localhost:3000'],
     methods: ["GET", "POST", "PUT","PATCH", "DELETE"],
     credentials: true,
 })
