@@ -13,22 +13,26 @@ const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORITY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
 
 const AddTask = ({ open, setOpen, task }) => {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
     defaultValues: {
-    title: "",
-    date: "",
-  },
-
+      title: "",
+      date: "",
+    },
   });
   const [team, setTeam] = useState(task?.team || []);
   const [stage, setStage] = useState(task?.stage?.toUpperCase() || LISTS[0]);
   const [priority, setPriority] = useState(task?.priority?.toUpperCase() || PRIORITY[2]);
 useEffect(() => {
   if (task) {
-    reset({
-      title: task.title || "",
-      date: task.date || "",
-    });
+   reset({
+     title: task.title || "",
+     date: task.date ? task.date.split("T")[0] : "",
+   });
     setStage(task.stage?.toUpperCase() || LISTS[0]);
     setPriority(task.priority?.toUpperCase() || PRIORITY[2]);
     setTeam(task.team || []);
